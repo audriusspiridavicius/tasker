@@ -1,5 +1,6 @@
 'use client'
-import Image from "next/image";
+export const CurrentTaskContext = createContext(null)
+
 import type { TaskType } from "./types/task";
 import { Priority } from "./types/task";
 import TaskList from "./components/task-list";
@@ -28,7 +29,7 @@ const tasks:TaskType[] = [
   name: "write integration tests",
   description: "describes task. write integration tests",
   priority: Priority.MEDIUM,
-  deadline: new Date(2024,10,10),
+  deadline: new Date(2024,1,1),
   authors: ["Mark Cuban", "Marius Mariauskas"],
   assigned_to: "audrius Spiridavicius"
 },
@@ -37,7 +38,7 @@ const tasks:TaskType[] = [
   name: "Add new endpoint to tasks api!",
   description: "describes task. Add new endpoint to tasks api!",
   priority: Priority.HIGH,
-  deadline: new Date(2024,10,10),
+  deadline: new Date(2025,5,5),
   authors: ["Jonas Valanciunas"],
   assigned_to: "vardenis pavardenis"
 }
@@ -103,13 +104,35 @@ export default function Home() {
 
   return (
     <>
+
+      <Container>
+        <DefaultButton onClick={()=>setDisplayGrid(true)}>grid</DefaultButton>
+
+        <DefaultButton onClick={()=>setDisplayGrid(false)}>list</DefaultButton>
+      </Container>
+
+
+      <Container>
+        <CurrentTaskContext.Provider value={setCurrentTask}>
+          {displayGrid && <TaskGrid tasks={taskList} onTaskClick={setshowCreateNewtask} onDeleteClick={removeTask}/>}
+        {!displayGrid &&  <TaskList tasks={taskList} onTaskClick={setshowCreateNewtask} onDeleteClick={removeTask} />}
+          
+        </CurrentTaskContext.Provider>
+
+        <DefaultButton data-modal-target="new-task-modal" data-modal-toggle="new-task-modal" 
+        onClick={()=> {setCurrentTask(default_task_value);setshowCreateNewtask(!showCreateNewtask);}}>New Task</DefaultButton>
+      </Container>
       
 
-      {showCreateNewtask && <Modal show={setshowCreateNewtask}> create new task modal</Modal>}
-      <TaskList tasks={tasks} />
-      
-      <DefaultButton data-modal-target="new-task-modal" data-modal-toggle="new-task-modal" 
-      onClick={()=> setshowCreateNewtask(!showCreateNewtask)}>New Task</DefaultButton>
+      {/* create/edit task modal */}
+
+      {showCreateNewtask && 
+        <Modal show={setshowCreateNewtask}>
+          <CreateTaskForm taskstate={[currentTask,setCurrentTask]} onSave={update_tasks}/>
+        </Modal>
+      }
+
+      {/* create/edit task modal ends*/}
 
     </>
   );
