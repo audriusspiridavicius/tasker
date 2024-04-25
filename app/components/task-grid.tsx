@@ -7,13 +7,14 @@ import { useContext } from 'react'
 import useGetTasks from '../utils/get_tasks'
 import useDeleteTask from '../utils/delete_task'
 import GridSkeleton from './gridskeleton'
-import { users } from './forms/createtaskform'
+import useGetUsers from '../utils/get_users'
+
 
 export default function TaskGrid({ onTaskClick, onDeleteClick}:any) {
   
     const {tasks, isError, isLoading} = useGetTasks()
     const {trigger:trigger_task_delete,isError:deletion_error} = useDeleteTask()
-
+ 
 
 
     const setTask = useContext(CurrentTaskContext) as any
@@ -34,7 +35,7 @@ export default function TaskGrid({ onTaskClick, onDeleteClick}:any) {
 
                 {task.authors ? task.authors.map((author: any)=>
                             <div key={Math.random()*1000} className="mr-2 mb-2">
-                                <AuthorLabel className="border-2 border-black text-2xl">{users[author-1].first_name} {users[author-1].last_name}</AuthorLabel>
+                                <AuthorLabel className="border-2 border-black text-2xl">{author.fullname}</AuthorLabel>
                             </div>
                         ): <AuthorLabel className="">none</AuthorLabel>}
                 </div>
