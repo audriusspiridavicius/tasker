@@ -4,7 +4,7 @@ export type TaskType = {
     description?: string;
     deadline:Date;
     priority:Priority;
-    authors:string[];
+    authors:number[];
     assigned_to:string;
 }
 
@@ -17,9 +17,9 @@ export enum Priority{
 }
 
 export const priority_values = () =>{
-    let values:string[] = []
+    let values:any[] = []
     Object.keys(Priority)
-    .map(key => values.push(key))
+    .map(key => values.push({value:key.toLowerCase(), label:key.toLowerCase()}))
     
     return values
 }
