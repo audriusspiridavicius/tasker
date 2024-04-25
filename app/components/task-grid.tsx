@@ -4,12 +4,26 @@ import AuthorLabel from './authorlabel'
 import DefaultButton from './buttons/defaultbutton'
 import { CurrentTaskContext } from '../page'
 import { useContext } from 'react'
+import useGetTasks from '../utils/get_tasks'
+import useDeleteTask from '../utils/delete_task'
+import GridSkeleton from './gridskeleton'
+import { users } from './forms/createtaskform'
 
-export default function TaskGrid({tasks=[], onTaskClick, onDeleteClick}:any) {
+export default function TaskGrid({ onTaskClick, onDeleteClick}:any) {
   
+    const {tasks, isError, isLoading} = useGetTasks()
+    const {trigger:trigger_task_delete,isError:deletion_error} = useDeleteTask()
+
+
+
     const setTask = useContext(CurrentTaskContext) as any
+    
+    {if (isError) return `An error has occurred. ${isError.message}`;}
+    
+    if (isLoading) return <GridSkeleton/>;
     return (
     <>
+    {deletion_error && " error occured while trying to delete task. please try again"}
     <div className='grid-cols-3 grid grid-flow-row gap-2 mb-5 '>
         {tasks.map((task:TaskType)=>
             <div key={task.id} className={`p-2 bg-gray-100 rounded-xl ${task.priority} grid`}>
@@ -20,16 +34,13 @@ export default function TaskGrid({tasks=[], onTaskClick, onDeleteClick}:any) {
 
                 {task.authors ? task.authors.map((author: any)=>
                             <div key={Math.random()*1000} className="mr-2 mb-2">
-                                <AuthorLabel className="border-2 border-black text-2xl">{author}</AuthorLabel>
+                                <AuthorLabel className="border-2 border-black text-2xl">{users[author-1].first_name} {users[author-1].last_name}</AuthorLabel>
                             </div>
                         ): <AuthorLabel className="">none</AuthorLabel>}
-
                 </div>
                 <div className='flex align-bottom justify-evenly self-end mb-auto content-end place-content-end'>
                     <DefaultButton className="w-1/2" onClick={()=>{setTask(task);onTaskClick(true);}}>View</DefaultButton>
-                    <DefaultButton className="w-1/2 mr-0" onClick={()=>onDeleteClick(task)}>delete</DefaultButton>
-
-
+                    <DefaultButton className="w-1/2 mr-0" onClick={()=>trigger_task_delete(task.id)}>delete</DefaultButton>
                 </div>
 
             </div>

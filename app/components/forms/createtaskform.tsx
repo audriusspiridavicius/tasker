@@ -10,12 +10,12 @@ import AuthorLabel from "../authorlabel";
 import DefaultButton from "../buttons/defaultbutton";
 import { useContext } from "react";
 import { ModalContext } from "../modal";
-
-
-export default function CreateTaskForm({taskstate, onSave}:any){
-    const [task, settask] = taskstate;
+export default function CreateTaskForm({taskstate}){
+    const [task, settask]:[TaskType, any] = taskstate;
     const close = useContext(ModalContext) as any;
     
+    const {trigger, isError, isMutating} = useCreateTask()
+
     return(
     <>
         <form className="">
@@ -40,8 +40,8 @@ export default function CreateTaskForm({taskstate, onSave}:any){
                     <textarea id="task-description" readOnly defaultValue={task.description} className="w-full h-[200px] min-h-[200px] max-h-[200px] overflow-y-scroll"></textarea>
                 </div>
            </div>
-
-            <DefaultButton className="w-full" onClick={()=>{onSave(); close && close()}}>Save</DefaultButton>
+            <DefaultButton className="w-full" onClick={()=>{const updatedAuthors: number[] = [1];settask({...task, authors:updatedAuthors, assigned_to:2})}}>Save 123</DefaultButton>
+            <DefaultButton className="w-full" onClick={()=>{trigger(task);!isError && !isMutating && close && close()}}>Save</DefaultButton>
             
         </form>
     </>
