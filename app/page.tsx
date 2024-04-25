@@ -17,13 +17,6 @@ const default_task_value:TaskType = {priority:Priority.LOW, deadline:new Date(),
 
 
 
-export type User = {
-  id:number,
-  first_name:string,
-  last_name:string,
-  email:string,
-  avatar:string
-}
 
 
 export default function Home() {
