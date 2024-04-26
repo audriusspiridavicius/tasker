@@ -21,6 +21,7 @@ export default function CreateTaskForm({taskstate}){
 
     const {data:users, error:usrs_error, isLoading:users_loading} = useGetUsers()    
 
+    
     return(
     <>
         <form className="">
@@ -53,13 +54,13 @@ export default function CreateTaskForm({taskstate}){
                     <Select
                         isMulti={false}
                         options={[...users].map((user)=>{ return {value:user.id, label:`${user.fullname}`}})} 
-                        defaultValue={task.assigned_to ? {value:task.assigned_to, label:`${task.assigned_to.fullname} `} : {value:"", label:""}}
-                        onChange= {(event)=>settask({...task, assigned_to:event.value})}
+                        defaultValue={task.assigned_to ? {value:task.assigned_to.id, label:`${task.assigned_to.fullname} `} : {value:"", label:""}}
+                        onChange= {(event)=>settask({...task, assigned_to:event?.value})}
                     />
                     }
                 </div>
            </div>
-            <DefaultButton className="w-full" onClick={()=>{const updatedAuthors: number[] = [1];settask({...task, authors:updatedAuthors, assigned_to:2})}}>Save 123</DefaultButton>
+
             <DefaultButton className="w-full" onClick={()=>{trigger(task);!isError && !isMutating && close && close()}}>Save</DefaultButton>
             
         </form>
