@@ -26,7 +26,7 @@ export default function TaskGrid({ onTaskClick, onDeleteClick}:any) {
     <>
     {deletion_error && " error occured while trying to delete task. please try again"}
     <div className='grid-cols-3 grid grid-flow-row gap-2 mb-5 '>
-        {tasks.map((task:TaskType)=>
+        {tasks && !isError && tasks.map((task:TaskType)=>
             <div key={task.id} className={`p-2 bg-gray-100 rounded-xl ${task.priority} grid`}>
                 <div className=' text-xl border-b-4 my-2 leading-loose align-middle  uppercase overflow-ellipsis h-12 overflow-hidden text-nowrap '>{task.name}</div>
                 <div className=' uppercase my-2'>{task.priority}</div>
