@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Header from "./components/header";
+import { createContext, useState } from "react";
+import AuthenticationContext from "./components/context/authentication";
 
 const inter = Inter({ subsets: ["latin"] });
+
+
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,18 +20,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
+
+
   return (
     <html lang="en">
-
-      
-
-      <body className={inter.className + " flex items-center justify-center h-screen bg-white"}>
-        
-        
-        <div className="w-full max-w-screen-lg p-4 m-auto">
-        {children}
-        </div>
-        
+      <body className={inter.className + " bg-white"}>
+      <AuthenticationContext>
+          <Header />
+          <div className="flex items-center justify-center h-screen">
+            <div className="w-full max-w-screen-lg p-4 m-auto">
+              <div className="flex flex-col items-end">
+              </div>
+            
+                {children}
+            
+            </div>
+          </div>
+        </AuthenticationContext>
         </body>
     </html>
   );

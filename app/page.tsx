@@ -5,18 +5,15 @@ import type { TaskType } from "./types/task";
 import { Priority } from "./types/task";
 import TaskList from "./components/task-list";
 import DefaultButton from "./components/buttons/defaultbutton";
-import { useState, createContext, useReducer } from "react";
+import { useState, createContext, useEffect, useContext } from "react";
 import Modal from "./components/modal";
 import CreateTaskForm from "./components/forms/createtaskform";
 import Container from "./components/containers/container";
 import TaskGrid from "./components/task-grid";
-
+import { isAuthenticated } from "./utils/authenticated";
+import {AuthContext} from "./components/context/authentication";
 
 const default_task_value:TaskType = {priority:Priority.LOW, deadline:new Date(), authors:[]} 
-
-
-
-
 
 
 export default function Home() {
@@ -24,12 +21,17 @@ export default function Home() {
   
   const [currentTask,setCurrentTask] = useState<TaskType>(default_task_value)
   const [displayGrid, setDisplayGrid] = useState(true)
+  const {authenticated, setAuthenticated} = useContext(AuthContext);
 
- 
 
+  // useEffect(()=>{
+  //   setAuthenticated(isAuthenticated())
+  // },[]);
+
+
+  {if (!authenticated) return `not authenticated`}
   return (
     <>
-
       <Container>
         <DefaultButton onClick={()=>setDisplayGrid(true)}>grid</DefaultButton>
         <DefaultButton onClick={()=>setDisplayGrid(false)}>list</DefaultButton>
@@ -60,3 +62,5 @@ export default function Home() {
     </>
   );
 }
+
+
