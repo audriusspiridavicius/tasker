@@ -23,7 +23,7 @@ export default function TaskList({onTaskClick, onDeleteClick}: any) {
     
     return (
     <>
-        {err && 'ivyko erroras!!!!!!!!!!!!! nepavyko istrinti'}
+        {err && `ivyko erroras!!!!!!!!!!!!! nepavyko istrinti ${err}`}
         {isMutating && 'isMutating!!!!!!!!!!!!! vyksta'}
         {data && data.success && "pavyko istrinti sekmingai"}
        <div className='w-11/12 flex mb-4'>
@@ -33,7 +33,7 @@ export default function TaskList({onTaskClick, onDeleteClick}: any) {
         <div className='w-1/6 capitalize text-center px-5'>priority</div>
     </div>
 
-        {tasks.map((task:TaskType)=>
+        {tasks?.map((task:TaskType)=>
             <div key={task.id} className='flex'>
                 <div onClick={()=>{setTask(task); onTaskClick(true)} }  className='w-11/12 flex py-5 my-2 border border-gray-200 rounded-lg shadow bg-white hover:shadow-inner hover:cursor-pointer hover:bg-gray-50'>
                     <div className='w-1/6 capitalize text-center'>
