@@ -39,11 +39,11 @@ export default function CreateTaskForm({taskstate}){
                     {!users_loading && 
                         <div className="flex flex-wrap"> 
                             <Label name="authors"/>  
-                            <Select 
+                            <Select key={"id"}
                             isMulti={true} 
                             options={[...users].map((user)=>{ return {value:user.id, label:`${user.fullname}`}})} 
                             defaultValue={[...task.authors].map(author =>{return {value:author.id, label:`${author.fullname}`}})}
-                            onChange={(event)=>settask({...task, authors:[...event].map(obj=>{return obj.value})})}
+                            onChange={(event)=>settask({...task, authors:[...event].map(obj=>{return {id:obj.value}})})}
                         />
                         </div>
                     }
@@ -51,12 +51,16 @@ export default function CreateTaskForm({taskstate}){
                 <div className="w-1/2 pl-4">
                     <textarea id="task-description" readOnly defaultValue={task.description} className="w-full min-h-[174px] max-h-[174px] overflow-y-scroll "></textarea>
                     {!users_loading &&
-                    <Select
+                    <div>
+                        <Label name="assigned to"/>
+                        <Select
                         isMulti={false}
                         options={[...users].map((user)=>{ return {value:user.id, label:`${user.fullname}`}})} 
                         defaultValue={task.assigned_to ? {value:task.assigned_to.id, label:`${task.assigned_to.fullname} `} : {value:"", label:""}}
-                        onChange= {(event)=>settask({...task, assigned_to:event?.value})}
-                    />
+                        onChange= {(event)=>settask({...task, assigned_to:{id:event?.value, fullname: event?.label}})}/>
+                    </div>
+
+
                     }
                 </div>
            </div>
