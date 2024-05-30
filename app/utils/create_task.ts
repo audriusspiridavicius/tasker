@@ -1,7 +1,7 @@
 import useSWR, { mutate } from "swr"
 import { TaskType } from "../types/task"
 import useSWRMutation from "swr/mutation"
-
+import { makeRequest } from "./makerequest"
 
 
 async function saveTask(url:string, { arg }:{ arg: TaskType }) {
@@ -9,10 +9,11 @@ async function saveTask(url:string, { arg }:{ arg: TaskType }) {
     
     if(id)
     {
-        await fetch(`${url}${id}`, {method: "PUT", body: JSON.stringify(arg), headers: {"Content-Type": "application/json",}})
+        await makeRequest(`${url}${id}`,{method: "PUT", body: JSON.stringify(arg), headers: {"Content-Type": "application/json",}}, true )
+        // await fetch(`${url}${id}`, {method: "PUT", body: JSON.stringify(arg), headers: {"Content-Type": "application/json",}})
     }
     else{
-        await fetch(`${url}`, {method: "POST", body: JSON.stringify(arg), headers: {"Content-Type": "application/json",}})
+        await makeRequest(`${url}`, {method: "POST", body: JSON.stringify(arg), headers: {"Content-Type": "application/json",}}, true)
     } 
 
 }

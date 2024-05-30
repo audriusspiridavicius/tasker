@@ -1,14 +1,11 @@
 import useSWRMutation from "swr/mutation"
-
+import { makeRequest } from "./makerequest"
 
 async function delete_task(url:string, { arg }:{ arg: number }){
     
-    const result = await fetch(`${url}${arg}/`, {
+    const result = await makeRequest(`${url}${arg}/`, {
         method: 'DELETE',
-        headers: {
-        'Content-Type': 'application/json'
-        }
-    })
+    }, true)
     if (result.status != 204) 
     
     {
