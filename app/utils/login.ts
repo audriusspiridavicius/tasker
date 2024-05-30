@@ -7,6 +7,7 @@ import { AuthContext } from "../components/context/authentication";
 import { isAuthenticated } from "./authenticated";
 import { error } from "console";
 // import { useSession } from "next-auth/react";
+
 async function login(url:string,{arg}:{arg:User})
 {
     
@@ -28,7 +29,7 @@ async function login(url:string,{arg}:{arg:User})
     }      
     const auth_data = await auth_result.json()
 
-    return {...auth_data, status:auth_result.status}
+    return {...auth_data, status:auth_result.status,email:arg.email}
 }
 
 
@@ -42,6 +43,7 @@ export default function useLogin(){
     if(data && data.status && data.status == 200){
         sessionStorage.setItem('access-token',data.access)
         sessionStorage.setItem('refresh-token',data.refresh)
+        sessionStorage.setItem('user-email',data.email)
         // refresh();
         // push('/');
         setAuthenticated(isAuthenticated())
