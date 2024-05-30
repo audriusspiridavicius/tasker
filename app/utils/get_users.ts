@@ -1,4 +1,6 @@
 import useSWR from "swr";
+import { isAuthenticated } from "./authenticated";
+import { makeRequest } from "./makerequest";
 
 
 
@@ -15,7 +17,19 @@ async function get_users(url:string)
     return data
 }
 
-export default function useGetUsers()
+export function GetLoggedUser()
 {
-    return useSWR("http://127.0.0.1:8000/users/",get_users)
+    if (isAuthenticated()){
+        const email = sessionStorage.getItem('user-email')
+        
+        var result = makeRequest(`http://127.0.0.1:8000/users/email/${email ? email : ""}`,{method:"get"},true)
+
+        return result.then((data) => {return data[0]})
+    }
+    return null
+}
+export default function useGetUsers(email = "")
+{
+
+    return useSWR(`http://127.0.0.1:8000/users/${email ? email : ""}`,get_users)
 }
