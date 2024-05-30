@@ -4,14 +4,13 @@ import DefaultButton from './buttons/defaultbutton';
 import { isAuthenticated, logOut } from '../utils/authenticated';
 import Link from 'next/link';
 import { AuthContext } from './context/authentication';
+import { User } from '../types/user';
 
 
 export default function Header() {
-    const {authenticated, setAuthenticated} = useContext(AuthContext);
+    const {authenticated, setAuthenticated, user, loading}:{user:User} = useContext(AuthContext);
+    const fullname = user?.email
 
-    // useEffect(()=>{
-    //     setAuthenticated(isAuthenticated())
-    //   },[]);
 
     return (
     <>
@@ -19,7 +18,9 @@ export default function Header() {
             <div><Link href={'/'}>Tasks</Link> | <Link href={'/login'}>Login</Link></div>
             <div>
                 {authenticated && 
-                <DefaultButton className="self-end" onClick={()=> {logOut();setAuthenticated(isAuthenticated())}}>logout</DefaultButton>}
+                <DefaultButton className="self-end" onClick={()=> {logOut();setAuthenticated(isAuthenticated())}}>
+                    {fullname}&nbsp;
+                    logout</DefaultButton>}
             </div>
             
             
