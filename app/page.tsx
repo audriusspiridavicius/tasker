@@ -12,7 +12,8 @@ import Container from "./components/containers/container";
 import TaskGrid from "./components/task-grid";
 import { isAuthenticated } from "./utils/authenticated";
 import {AuthContext} from "./components/context/authentication";
-
+import GridSkeleton from "./components/gridskeleton";
+import Link from "next/link";
 const default_task_value:TaskType = {priority:Priority.LOW, deadline:new Date(), authors:[]} 
 
 
@@ -21,15 +22,11 @@ export default function Home() {
   
   const [currentTask,setCurrentTask] = useState<TaskType>(default_task_value)
   const [displayGrid, setDisplayGrid] = useState(true)
-  const {authenticated, setAuthenticated} = useContext(AuthContext);
+  const {authenticated, setAuthenticated, loading} = useContext(AuthContext);
 
 
-  // useEffect(()=>{
-  //   setAuthenticated(isAuthenticated())
-  // },[]);
-
-
-  {if (!authenticated) return `not authenticated`}
+  {if (loading) return <GridSkeleton/>}
+  {if (!authenticated) return  <div className="text-center text-2xl ">Please <Link className="hover:underline" href={"/login"}> Login here</Link></div> }
   return (
     <>
       <Container>
