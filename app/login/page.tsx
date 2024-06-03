@@ -1,15 +1,15 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Login from '../components/forms/login'
 import Container from '../components/containers/container'
-import { isAuthenticated } from '../utils/authenticated'
+import { BrowserRouter as Router  } from 'react-router-dom'
+import { AuthContext } from '../components/context/authentication'
 
 export default function Page() {
-    const [authenticated, setAuthenticated] = useState(false);
+  const {authenticated, setAuthenticated} = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
-        setAuthenticated(isAuthenticated());
         setLoading(false);
       }, []);
       
@@ -17,10 +17,11 @@ export default function Page() {
     return (
     <>
         {!loading && !authenticated && (
-                    <Container>
-                    <Login/>
-        
-                </Container>
+            <Container>
+              <Router>
+                <Login/>
+              </Router>
+            </Container>
         )}
     </>
   )

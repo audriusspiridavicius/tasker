@@ -9,22 +9,23 @@ export const AuthContext = createContext(null)
 export default function AuthenticationContext({children}) {
     
     const [loading,setLoading] = useState(true)
-    const [authenticated, setAuthenticated] = useState(false)
+    const [authenticated, setAuthenticated] = useState(isAuthenticated())
     const [user,setUser] = useState(null)
   
     useEffect(() => {
         setAuthenticated(isAuthenticated())
-        
         if (isAuthenticated()){
-            const loggedusr = GetLoggedUser()
-            loggedusr?.then((usr)=>{console.log(usr);setUser(usr)})
+            if(!user){
+                const loggedusr = GetLoggedUser()
+                loggedusr?.then((usr)=>{console.log(usr);setUser(usr)})
+            }
         }
         setLoading(false)
-    },[]);
-    // if(loading) return "loading"
+    },[authenticated,user]);
+    if(loading) return "loading"
     return (
    <>
-    <AuthContext.Provider value={{authenticated, setAuthenticated, loading, user}}>
+    <AuthContext.Provider value={{authenticated, setAuthenticated, user, loading, setUser}}>
         {children}
     </AuthContext.Provider>
    

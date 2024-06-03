@@ -8,9 +8,8 @@ import { User } from '../types/user';
 
 
 export default function Header() {
-    const {authenticated, setAuthenticated, user, loading}:{user:User} = useContext(AuthContext);
+    const {authenticated, setAuthenticated, user}:{user:User} = useContext(AuthContext);
     const fullname = user?.email
-
 
     return (
     <>
@@ -18,7 +17,7 @@ export default function Header() {
             <div><Link href={'/'}>Tasks</Link> | <Link href={'/login'}>Login</Link></div>
             <div>
                 {authenticated && 
-                <DefaultButton className="self-end" onClick={()=> {logOut();setAuthenticated(isAuthenticated())}}>
+                <DefaultButton className="self-end" onClick={()=> {logOut();setAuthenticated(false)}}>
                     {fullname}&nbsp;
                     logout</DefaultButton>}
             </div>

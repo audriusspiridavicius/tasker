@@ -1,12 +1,5 @@
 import useSWRMutation from "swr/mutation";
 import { User } from "../types/user";
-import { useRouter } from "next/navigation";
-import { redirect } from 'next/navigation'
-import { useContext } from "react";
-import { AuthContext } from "../components/context/authentication";
-import { isAuthenticated } from "./authenticated";
-import { error } from "console";
-// import { useSession } from "next-auth/react";
 
 async function login(url:string,{arg}:{arg:User})
 {
@@ -34,22 +27,17 @@ async function login(url:string,{arg}:{arg:User})
 
 
 export default function useLogin(){
-
-    const {authenticated, setAuthenticated} = useContext(AuthContext);
     
     const {data, error, trigger, isMutating} = useSWRMutation('http://127.0.0.1:8000/api/token/', login)
 
-    
     if(data && data.status && data.status == 200){
+        
         sessionStorage.setItem('access-token',data.access)
         sessionStorage.setItem('refresh-token',data.refresh)
         sessionStorage.setItem('user-email',data.email)
-        // refresh();
-        // push('/');
-        setAuthenticated(isAuthenticated())
-        redirect("/")
-            
+
     }
+
     return {
         data,
         error,
