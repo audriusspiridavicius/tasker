@@ -16,6 +16,7 @@ export async function makeRequest(url: string, options: object, authorization = 
         await refreshToken()
         return await makeRequest(url,options, true)
     }
-    
-    return data
+    if (response.ok) {
+        return data
+    }
 }

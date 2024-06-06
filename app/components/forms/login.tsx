@@ -22,12 +22,17 @@ export default function Login() {
   
     const {register, handleSubmit, formState:{errors}} = useForm({defaultValues:{email:"", password:""}})
 
-    const onSubmit = () => {
-        trigger(user).then((data)=>{
-            const logged = GetLoggedUser();
-            setUser(logged);
+    const onSubmit = async () => {
+        const data = await trigger(user);
+        if (data) {
+            const logged = await GetLoggedUser();
 
-        });
+            if(logged){
+                setUser(logged);
+                // navigate("/");
+            }
+        }
+
     }
     const onError = () => {console.log("error occured!!!!")}
 

@@ -8,7 +8,7 @@ import { User } from '../types/user';
 
 
 export default function Header() {
-    const {authenticated, setAuthenticated, user}:{user:User} = useContext(AuthContext);
+    const {authenticated, setAuthenticated, user}= useContext(AuthContext);
     const fullname = user?.email
 
     return (

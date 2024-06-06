@@ -21,7 +21,12 @@ async function login(url:string,{arg}:{arg:User})
         throw "something went wrong. Please try again!"
     }      
     const auth_data = await auth_result.json()
-
+    if(auth_result && auth_result.status && auth_result.status == 200){
+        
+        sessionStorage.setItem('access-token',auth_data.access)
+        sessionStorage.setItem('refresh-token',auth_data.refresh)
+        sessionStorage.setItem('user-email',arg.email)
+    }
     return {...auth_data, status:auth_result.status,email:arg.email}
 }
 
@@ -29,14 +34,6 @@ async function login(url:string,{arg}:{arg:User})
 export default function useLogin(){
     
     const {data, error, trigger, isMutating} = useSWRMutation('http://127.0.0.1:8000/api/token/', login)
-
-    if(data && data.status && data.status == 200){
-        
-        sessionStorage.setItem('access-token',data.access)
-        sessionStorage.setItem('refresh-token',data.refresh)
-        sessionStorage.setItem('user-email',data.email)
-
-    }
 
     return {
         data,

@@ -13,7 +13,7 @@ export default function Page() {
         setLoading(false);
       }, []);
       
-    if (authenticated) return `already logged in`
+    // if (authenticated) return `already logged in`
     return (
     <>
         {!loading && !authenticated && (
