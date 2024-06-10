@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className={inter.className + " bg-white"}>
       <AuthenticationContext>
           <Header />
-          <div className="flex items-center justify-center h-screen">
+          <div className="flex items-center justify-center">
             <div className="w-full max-w-screen-lg p-4 m-auto">
               <div className="flex flex-col items-end">
               </div>
