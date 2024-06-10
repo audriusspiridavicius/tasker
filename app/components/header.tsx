@@ -9,7 +9,7 @@ import { User } from '../types/user';
 
 export default function Header() {
     const {authenticated, setAuthenticated, user}= useContext(AuthContext);
-    const fullname = user?.email
+    const email = user?.email
 
     return (
     <>
@@ -17,9 +17,14 @@ export default function Header() {
             <div><Link href={'/'}>Tasks</Link> | <Link href={'/login'}>Login</Link></div>
             <div>
                 {authenticated && 
-                <DefaultButton className="self-end" onClick={()=> {logOut();setAuthenticated(false)}}>
-                    {fullname}&nbsp;
-                    logout</DefaultButton>}
+                <div>
+                    <DefaultButton>{email}</DefaultButton>
+                    
+                    <DefaultButton className="self-end" onClick={()=> {logOut();setAuthenticated(false)}}>
+                        logout</DefaultButton>
+
+                </div>
+}
             </div>
             
             
