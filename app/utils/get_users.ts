@@ -19,7 +19,6 @@ async function get_users(url:string)
 
 export async function GetLoggedUser()
 {
-    console.log(`acces token = ${sessionStorage.getItem("access-token")}`)
     if (isAuthenticated()){
         const email = sessionStorage.getItem('user-email')
         
