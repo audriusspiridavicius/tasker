@@ -3,15 +3,15 @@ import { isAuthenticated } from '@/app/utils/authenticated';
 import React, { useEffect } from 'react'
 import { createContext, useState } from 'react'
 import { GetLoggedUser } from '@/app/utils/get_users';
+import { User } from '@/app/types/user';
 
 export const AuthContext = createContext(null)
 
-export default function AuthenticationContext({children}) {
+export default function AuthenticationContext({children}:{children:any}) {
     
     const [loading,setLoading] = useState(true)
-    // const [authenticated, setAuthenticated] = useState(isAuthenticated())
     const [authenticated, setAuthenticated] = useState(false)
-    const [user,setUser] = useState(null)
+    const [user,setUser] = useState<User>()
   
     useEffect(() => {
         
@@ -24,11 +24,9 @@ export default function AuthenticationContext({children}) {
         }
         setLoading(false)
     },[user]);
-    // if(loading) return "loading"
     return (
    <>
-    <AuthContext.Provider value={{authenticated, setAuthenticated, user, loading, setUser: (user) => {
-            console.log(`Setting123 user:${user}`);
+    <AuthContext.Provider value={{authenticated, setAuthenticated, user, loading, setUser: (user:User) => {
             setUser(user);
         }}}>
         {children}
