@@ -12,16 +12,16 @@ import useCreateTask from "@/app/utils/create_task";
 import Select  from 'react-select';
 import useGetUsers from "@/app/utils/get_users";
 
+
   
-export default function CreateTaskForm({taskstate}){
+export default function CreateTaskForm({taskstate, getTasks}){
+    
     const [task, settask]:[TaskType, any] = taskstate;
     const close = useContext(ModalContext) as any;
     
     const {trigger, isError, isMutating} = useCreateTask()
-
     const {data:users, error:usrs_error, isLoading:users_loading} = useGetUsers()    
 
-    
     return(
     <>
         <form className="">
@@ -65,7 +65,7 @@ export default function CreateTaskForm({taskstate}){
                 </div>
            </div>
 
-            <DefaultButton className="w-full" onClick={()=>{trigger(task);!isError && !isMutating && close && close()}}>Save</DefaultButton>
+            <DefaultButton className="w-full" onClick={()=>{trigger(task).then(()=>getTasks(1));!isError && !isMutating && close && close();}}>Save</DefaultButton>
             
         </form>
     </>
