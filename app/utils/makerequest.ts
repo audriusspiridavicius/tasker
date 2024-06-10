@@ -10,7 +10,14 @@ export async function makeRequest(url: string, options: object, authorization = 
     }
     
     const response = await fetch(url,{...options})
-    const data = await response.json()
+
+    let data;
+    if(response.statusText != "No Content"){
+        data = await response.json();
+    }
+    else{
+        data = response
+    }
     
     if(response.status == 401){
         await refreshToken()
