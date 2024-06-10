@@ -6,7 +6,8 @@ async function delete_task(url:string, { arg }:{ arg: number }){
     const result = await makeRequest(`${url}${arg}/`, {
         method: 'DELETE',
     }, true)
-    if (result.status != 204) 
+
+    if (result.status != 204 && result.status != "204 No Content") 
     
     {
         throw Error("Something went wrong during task deletion.")
