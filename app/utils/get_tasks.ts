@@ -3,30 +3,37 @@ import useSWR from "swr"
 import refreshToken from "./refresh_token"
 import { isAuthenticated } from "./authenticated"
 import { makeRequest } from "./makerequest"
+import useSWRMutation from "swr/mutation"
+import { TaskType } from "../types/task"
 
 
 
 
 
-
-export default function useGetTasks(){
+export default function useGetTasks(page,per_page){
     
 
-    const  get_Tasks = async (url:string) => 
+    const  get_Tasks = async (url:string, {page, per_page = 0} :{page:  number, per_page:number }) => 
     {
         const options = {
             method: "GET"
         }
+        
+        var page_query_parameter = `page=${page}`
+        var per_page_query_parameter = per_page > 0 ? `&page_size=${per_page}` :  ""
+
+        url = `${url}?${page_query_parameter}${per_page_query_parameter}`
 
         const result = await makeRequest(url,options, true);
         return result
     }
 
-    var {data, error, isLoading } = useSWR("http://127.0.0.1:8000/tasks/",get_Tasks)
+    var {trigger:getTasks, data, error, isMutating } = useSWRMutation(["http://127.0.0.1:8000/tasks/", {page, per_page}],([url,{page, per_page}])=> get_Tasks(url,{page,per_page}))
     
     return {
-        tasks: data,
-        isLoading,
-        isError: error
+        result: data,
+        isMutating,
+        isError: error,
+        getTasks
     }
 }
