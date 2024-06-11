@@ -1,29 +1,32 @@
 import refreshToken from "./refresh_token"
 
-export async function makeRequest(url: string, options: object, authorization = false)
+export async function makeRequest(url: string, options: object, authorization = false):Promise<any>
 {
+    let headers;
+    
     if (authorization){
-        options = {...options,  headers: {
+        headers = {
             "Authorization":`Bearer ${sessionStorage.getItem("access-token")}`,
-            "Content-Type": "application/json"
-        }}
+        }
     }
+    
+
+    options = {...options,headers:{...headers}}
     
     const response = await fetch(url,{...options})
-
     let data;
-    if(response.statusText != "No Content"){
-        data = await response.json();
-    }
-    else{
-        data = response
-    }
-    
-    if(response.status == 401){
-        await refreshToken()
-        return await makeRequest(url,options, true)
-    }
-    if (response.ok) {
+        if(response.status == 204){
+            data = response
+           
+        }
+        else{
+            data = await response.json();
+        }
+        
+        if(response.status == 401){
+            await refreshToken()
+            return await makeRequest(url,options, true)
+        }
         return data
-    }
+    
 }
