@@ -10,7 +10,7 @@ import { useContext } from "react";
 import { ModalContext } from "../modal";
 import useCreateTask from "@/app/utils/create_task";
 import Select  from 'react-select';
-import useGetUsers from "@/app/utils/get_users";
+import useGetUsers from "@/app/utils/user/get_users";
 
 
   

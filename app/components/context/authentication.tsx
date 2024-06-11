@@ -2,7 +2,7 @@
 import { isAuthenticated } from '@/app/utils/authenticated';
 import React, { useEffect } from 'react'
 import { createContext, useState } from 'react'
-import { GetLoggedUser } from '@/app/utils/get_users';
+import { GetLoggedUser } from '@/app/utils/user/get_users';
 import { User } from '@/app/types/user';
 
 export const AuthContext = createContext(null)

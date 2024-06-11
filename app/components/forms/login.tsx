@@ -8,14 +8,14 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, } from "react-router-dom";
 import { isAuthenticated } from '@/app/utils/authenticated'
 import { AuthContext } from '../context/authentication'
-import { GetLoggedUser } from '@/app/utils/get_users'
+import { GetLoggedUser } from '@/app/utils/user/get_users'
 
 
 
 export default function Login() {
     const navigate = useNavigate();
     // const history = useHistory();
-    const {authenticated, setAuthenticated, setUser}:{user:User} = useContext(AuthContext);
+    const {authenticated, setAuthenticated, setUser} = useContext(AuthContext);
     const {data, error, trigger, isMutating} = useLogin()
 
     const [user, setUser1] = useState()
@@ -42,14 +42,14 @@ export default function Login() {
         <form onSubmit={handleSubmit(onSubmit,onError)}> 
             <h1 className="text-2xl font-bold mb-5">Login</h1>
 
-            <TextInput {...register("email", {required:"Email field is required!"})}  name="email" id="user-email" type="email" className="mb-5" onChange={(e)=> setUser1({...user,email:e.target.value})}/>
+            <TextInput {...register("email", {required:"Email field is required!"})}  name="email" id="email" type="email" className="mb-5" onChange={(e)=> setUser1({...user,email:e.target.value})}/>
             {errors.email && 
                 <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
                     {errors.email.message}
                 </div>
             }
 
-            <TextInput {...register("password", {required:`password field is required`, minLength:{value:4, message:"min length of password is 4"}})}  name="password" id="user-password" type="password" className="mb-5" onChange={(e)=> setUser1({...user,password:e.target.value})}/>
+            <TextInput {...register("password", {required:`password field is required`, minLength:{value:4, message:"min length of password is 4"}})}  name="password" id="password" type="password" className="mb-5" onChange={(e)=> setUser1({...user,password:e.target.value})}/>
             {errors.password &&
                 <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
                     {errors.password.message}
