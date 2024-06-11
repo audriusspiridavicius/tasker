@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { Priority, TaskType } from '../types/task'
-import AuthorLabel from './authorlabel'
+import CustomLabel from './customlabel'
 import DefaultButton from './buttons/defaultbutton'
 import { CurrentTaskContext } from '../page'
 import { useContext } from 'react'
@@ -40,9 +40,9 @@ export default function TaskGrid({ onTaskClick, tasksData}:any) {
 
                 {task.authors ? task.authors.map((author: any)=>
                             <div key={Math.random()*1000} className="mr-2 mb-2">
-                                <AuthorLabel className="border-2 border-black text-2xl">{author.fullname}</AuthorLabel>
+                                <CustomLabel className="border-2 border-black text-2xl">{author.fullname}</CustomLabel>
                             </div>
-                        ): <AuthorLabel className="">none</AuthorLabel>}
+                        ): <CustomLabel className="">none</CustomLabel>}
                 </div>
                 <div className='flex align-bottom justify-evenly self-end mb-auto content-end place-content-end'>
                     <DefaultButton className="w-1/2" onClick={()=>{setCurrentTask(task);onTaskClick(true);}} >View</DefaultButton>
