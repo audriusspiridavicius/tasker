@@ -44,6 +44,7 @@ export default function CreateTaskForm({taskstate, getTasks}){
                             options={[...users].map((user)=>{ return {value:user.id, label:`${user.fullname}`}})} 
                             defaultValue={[...task.authors].map(author =>{return {value:author.id, label:`${author.fullname}`}})}
                             onChange={(event)=>settask({...task, authors:[...event].map(obj=>{return {id:obj.value}})})}
+                            className="w-full"
                         />
                         </div>
                     }
