@@ -18,12 +18,11 @@ export default function Header() {
             <div>
                 {authenticated && 
                 <div>
-                    <DefaultButton>
-                    
-                        <Link href={'/profile'}>{email}</Link>
-                        
-                    </DefaultButton>
-                    
+                    <Link href={'/profile'}>
+                        <DefaultButton>
+                            {email}
+                        </DefaultButton>
+                    </Link>
                     <DefaultButton className="self-end" onClick={()=> {logOut();setAuthenticated(false)}}>
                         logout
                     </DefaultButton>
