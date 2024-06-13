@@ -1,19 +1,11 @@
 'use client'
-import useSWR from "swr"
-import refreshToken from "./refresh_token"
-import { isAuthenticated } from "./authenticated"
 import { makeRequest } from "./makerequest"
 import useSWRMutation from "swr/mutation"
-import { TaskType } from "../types/task"
-
-
-
-
 
 export default function useGetTasks(page,per_page){
     
 
-    const  get_Tasks = async (url:string, {page, per_page = 0} :{page:  number, per_page:number }) => 
+    const  get_Tasks = async (url:string, {page = 1, per_page = 0} :{page:  number, per_page:number }) => 
     {
         const options = {
             method: "GET"

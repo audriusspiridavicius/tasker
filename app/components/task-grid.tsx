@@ -6,6 +6,7 @@ import DefaultButton from './buttons/defaultbutton'
 import { CurrentTaskContext } from '../page'
 import { useContext } from 'react'
 import useDeleteTask from '../utils/delete_task'
+import GridSkeleton from './gridskeleton'
 
 
 const default_task_value:TaskType = {priority:Priority.LOW, deadline:new Date(), authors:[], name:"", assigned_to:""} 
@@ -24,7 +25,7 @@ export default function TaskGrid({ onTaskClick, tasksData}:any) {
     // {if (!isAuthenticated) return `not authenticated`}
     // {if (isError) return `An error has occurred. ${isError.message}. Please try again`;}
     
-    // if (tasksData?.isMutating) return <GridSkeleton/>;
+    if (tasksData?.isMutating) return <GridSkeleton/>;
     // if (tasks.detail) return  tasks.detail;
     return (
     <>

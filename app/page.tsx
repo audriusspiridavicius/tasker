@@ -58,10 +58,10 @@ export default function Home() {
   },[pageIndex, recordsPerPage])
 
     {if (loading) return <GridSkeleton/>}
-
+    {if(isError) return <GridSkeleton/>}
     {if (!authenticated) return  <div className="text-center text-2xl ">Please <Link className="hover:underline" href={"/login"}> Login here</Link></div> }
     return (
-<>
+<>      {!isMutating && result && 
             <Container className="flex justify-between">
             <div>
                 <DefaultButton className={displayGrid==true && "bg-blue-800 text-white "} onClick={()=>setDisplayGrid(true)}>grid</DefaultButton>
@@ -87,24 +87,27 @@ export default function Home() {
                 </DefaultButton>
             </div>
             </Container>
-
+        }
         {!isMutating && result && 
+            <>
             <Container>
                 <Paging 
                     settings={{current_page:result.current_page, total_pages:result.pages, lastPage:true, firstPage:true }} 
                     page={[pageIndex, setPageIndex]} ></Paging>
             </Container>
+            <Container>
+
+                <CurrentTaskContext.Provider value={{currentTask,setCurrentTask}}>
+        
+                    {result && displayGrid && <TaskGrid onTaskClick={setshowCreateNewtask} tasksData={{result, isError, isMutating, getTasks}}/>}
+                    {result && !displayGrid &&  <TaskList onTaskClick={setshowCreateNewtask} tasksData={{result, isError, isMutating, getTasks}}/>}
+                  
+                </CurrentTaskContext.Provider>
+            </Container>
+            </>
         }
     
-    <Container>
 
-        <CurrentTaskContext.Provider value={{currentTask,setCurrentTask}}>
-
-            {result && displayGrid && <TaskGrid onTaskClick={setshowCreateNewtask} tasksData={{result, isError, isMutating, getTasks}}/>}
-            {result && !displayGrid &&  <TaskList onTaskClick={setshowCreateNewtask} tasksData={{result, isError, isMutating, getTasks}}/>}
-          
-        </CurrentTaskContext.Provider>
-    </Container>
     {!isMutating && result && 
     <Container>
         <Paging 

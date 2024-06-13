@@ -5,7 +5,7 @@ export type TaskType = {
     deadline:Date;
     priority:Priority;
     authors:number[];
-    assigned_to:string;
+    assigned_to:{};
 }
 
 export enum Priority{

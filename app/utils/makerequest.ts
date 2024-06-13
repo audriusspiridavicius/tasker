@@ -2,18 +2,26 @@ import refreshToken from "./refresh_token"
 
 export async function makeRequest(url: string, options: object, authorization = false):Promise<any>
 {
-    let headers;
+    let headers = options?.headers;
     
     if (authorization){
         headers = {
+            ...headers,
             "Authorization":`Bearer ${sessionStorage.getItem("access-token")}`,
         }
     }
     
 
     options = {...options,headers:{...headers}}
-    
-    const response = await fetch(url,{...options})
+    let response = undefined;
+    try{
+        response = await fetch(url,{...options})
+    }
+    catch{
+        throw Error("Server error!");
+        
+    }
+        
     let data;
         if(response.status == 204){
             data = response
