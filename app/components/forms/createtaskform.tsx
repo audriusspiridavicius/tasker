@@ -27,6 +27,7 @@ export default function CreateTaskForm({taskstate, getTasks}){
         name:task.name,
         authors:[...task.authors].map(author =>{return {value:author, label:`${author.fullname}`}}),
         steps:task.steps,
+        deadline:task.deadline,
         priority:task.priority ? { value: task.priority, label: task.priority } : null
 
 
@@ -86,8 +87,27 @@ export default function CreateTaskForm({taskstate, getTasks}){
                         />
                     </div>
                     <div>
-                        <Label id="task-deadline" name="Task deadline"/>
-                        <Datepicker minDate={new Date()} inline={false} defaultDate={new Date(task.deadline)} id="task-deadline" className="mb-5"  onSelectedDateChanged={(event)=> settask({...task, deadline:event})}/>
+                        <Label name="Task deadline"/>
+                        
+                        
+                        <Controller
+                            name="deadline"
+                            control={control}
+                            render={({field: { onChange, onBlur, value, name, ref },})=>(
+                                <Datepicker
+                                    name={name}    
+                                    ref={ref}    
+                                    inline={false} 
+                                    defaultDate={new Date(value)}
+                                    className="mb-5"  
+                                    onSelectedDateChanged={(event)=>{settask({...task, deadline:event});onChange(event)}}
+                                />
+                            )}
+                        />
+                        
+   
+                    
+                    
                     </div>
                     {!users_loading && 
                         <div className="flex flex-wrap mb-5"> 
