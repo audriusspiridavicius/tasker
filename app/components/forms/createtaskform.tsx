@@ -25,11 +25,12 @@ export default function CreateTaskForm({taskstate, getTasks}){
 
     const {register, handleSubmit, formState:{errors}, control} = useForm({defaultValues:{
         name:task.name,
+        authors:[...task.authors].map(author =>{return {value:author, label:`${author.fullname}`}}),
         steps:task.steps,
 
 
     const handleValidSubmit = async (data)=>{
-        await trigger(task);
+        data.authors = data.authors.map((author)=>{return author.value})
         await getTasks(1);
         !isError && !isMutating && close && close()
     }
@@ -87,20 +88,18 @@ export default function CreateTaskForm({taskstate, getTasks}){
                                 render={({field: { onChange, onBlur, value, name, ref },})=>(
 
                                 <Select key={"id"}
-                                ref={ref}
-                                value={value}
-                                isMulti={true} 
-                                options={[...users].map((user)=>{ return {value:user.id, label:`${user.fullname}`}})} 
-                                onChange={(event)=>{onChange(event);settask({...task, authors:[...event].map(obj=>{return {id:obj.value}})})}}
-                                className="w-full"
-                                name={name}
+                                    ref={ref}
+                                    value={value}
+                                    isMulti={true} 
+                                    options={[...users].map((user)=>{ return {value:user, label:`${user.fullname}`}})} 
+                                    onChange={(event)=>{onChange(event);settask({...task, authors:[...event]})}}
+                                    className="w-full"
+                                    name={name}
                                 />
                             )}
                         />
                         
-                            
                         </div>
-                        
                     }
                     {errors.authors && <ErrorMessage> {errors.authors.message}</ErrorMessage> }
                 </div>
