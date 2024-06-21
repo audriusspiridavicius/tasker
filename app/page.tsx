@@ -3,13 +3,13 @@ export const CurrentTaskContext = createContext(null)
 
 import type { TaskType } from "./types/task";
 import { Priority } from "./types/task";
-import TaskList from "./components/task-list";
+import TaskList from "./components/task/task-list";
 import DefaultButton from "./components/buttons/defaultbutton";
 import { useState, createContext, useEffect, useContext } from "react";
 import Modal from "./components/modal";
 import CreateTaskForm from "./components/forms/createtaskform";
 import Container from "./components/containers/container";
-import TaskGrid from "./components/task-grid";
+import TaskGrid from "./components/task/task-grid";
 import {AuthContext} from "./components/context/authentication";
 import GridSkeleton from "./components/gridskeleton";
 import Link from "next/link";
