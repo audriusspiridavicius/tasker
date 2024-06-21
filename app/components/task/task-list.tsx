@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react'
-import type { TaskType } from '../types/task'
-import Task  from "./task"
+import type { TaskType } from '../../types/task'
 import { useContext } from 'react'
-import { CurrentTaskContext } from '../page'
-import DefaultButton from './buttons/defaultbutton'
-import DeleteButton from './buttons/deletebutton'
-import useSWR from 'swr'
-import useGetTasks from '../utils/get_tasks'
-import useDeleteTask from '../utils/delete_task'
+import { CurrentTaskContext } from '../../page'
+import DeleteButton from '../buttons/deletebutton'
+
+import useDeleteTask from '../../utils/delete_task'
 import { Avatar } from 'flowbite-react'
 
 const images:string[] = ["person9.png","person10.jpg","person8.jpg","profile7.jpg"]
