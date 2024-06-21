@@ -19,16 +19,14 @@ export async function makeRequest(url: string, options: object, authorization = 
     }
     catch{
         throw Error("Server error!");
-        
     }
         
-    let data;
-        if(response.status == 204){
-            data = response
-           
+    let data = {};
+        if(response.status != 204){
+            data = await response.json();
         }
         else{
-            data = await response.json();
+            data = response
         }
         
         if(response.status == 401){
