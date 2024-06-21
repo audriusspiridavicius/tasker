@@ -27,10 +27,12 @@ export default function CreateTaskForm({taskstate, getTasks}){
         name:task.name,
         authors:[...task.authors].map(author =>{return {value:author, label:`${author.fullname}`}}),
         steps:task.steps,
+        priority:task.priority ? { value: task.priority, label: task.priority } : null
 
 
     const handleValidSubmit = async (data)=>{
         data.authors = data.authors.map((author)=>{return author.value})
+        data.priority = data.priority.value
         await getTasks(1);
         !isError && !isMutating && close && close()
     }
@@ -71,8 +73,17 @@ export default function CreateTaskForm({taskstate, getTasks}){
                     <TextInput {...register("name",{"required":"this field is required"})} id="name" className="mb-5" onChange={(e:any)=> settask({...task,name:e.target.value})}/>
                     {errors.name && <ErrorMessage>Please enter task name</ErrorMessage>}
                     <div className="mb-5">
-                        <Label id="task-priority"  name="priority"/>
-                        <Select id="task-priority" name="priority" isSearchable={true} options={priority_values()}  defaultValue={{value:task.priority,label:task.priority}} onChange={(event)=>settask({...task, priority:event.value})}/>   
+                        <Label name="priority"/>
+                        <Controller 
+                                name="priority"
+                                control={control}
+                                rules={{required:"Select Priority"}}
+                                render={({field: { onChange, onBlur, value, name, ref },})=>(
+                        
+                                <Select ref={ref} value={value} name={name} isSearchable={true} options={priority_values()}  onChange={(event)=>{onChange(event);settask({...task, priority:event.value})}}/> 
+                            
+                            )}
+                        />
                     </div>
                     <div>
                         <Label id="task-deadline" name="Task deadline"/>
