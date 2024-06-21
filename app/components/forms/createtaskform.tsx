@@ -11,9 +11,9 @@ import { ModalContext } from "../modal";
 import useCreateTask from "@/app/utils/create_task";
 import Select  from 'react-select';
 import useGetUsers from "@/app/utils/user/get_users";
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import ErrorMessage from "../form_elements/error_message";
-
+import NamedContainer from "../containers/named_container";
   
 export default function CreateTaskForm({taskstate, getTasks}){
     
@@ -25,9 +25,7 @@ export default function CreateTaskForm({taskstate, getTasks}){
 
     const {register, handleSubmit, formState:{errors}, control} = useForm({defaultValues:{
         name:task.name,
-        authors:[...task.authors].map(author =>{return {value:author.id, label:`${author.fullname}`}}),
-        assigned_to: task.assigned_to ? { value: task.assigned_to.id, label: task.assigned_to.fullname } : null
-    }})
+        steps:task.steps,
 
 
     const handleValidSubmit = async (data)=>{
@@ -39,6 +37,30 @@ export default function CreateTaskForm({taskstate, getTasks}){
     const handleErrors = ()=>{
         console.log("form errors")
     }
+
+    const [taskid, SetTaskId] = useState(task.id)
+    
+    const get_steps = async(id:number)=>{
+        if(!id) return []; 
+        const steps_list=await makeRequest(`http://127.0.0.1:8000/tasks/${id}/get_steps`,{method: "GET"},true)
+        .then((data)=>{
+            return data.steps}); return steps_list}
+    
+    
+    const [steps, SetSteps] = useState([])
+  
+    useEffect(()=>{
+        
+        get_steps(taskid).then((data)=>{SetSteps(data)})
+
+    },[taskid])
+    
+    const [step, SetStep] = useState()
+
+
+    const { fields,append, remove } = useFieldArray({ control, name: "steps", keyName:"key" });
+
+
 
     return(
     <>
@@ -109,7 +131,42 @@ export default function CreateTaskForm({taskstate, getTasks}){
                     {errors.assigned_to && <ErrorMessage>Please select Assigned To user</ErrorMessage>} 
                 </div>
            </div>
+           {task && 
+                <> 
+                    <Label>Steps</Label>
+                    <NamedContainer title="Task Steps">
+                        <div className='flex flex-wrap'>
+                            {steps &&
+                                fields.map((step,index)=>(
+                               
+                                        
+                                    <div key={step.id} className={`flex w-[30%]`}>
+                                        {index+1}.        
+                                        <div className='flex'>
+                                            <div>{step.name}</div>
+                                            <input key={step.id} {...register(`steps.${index}.name`)} type='hidden' value={step.name} />
+                                            {step.id &&
+                                                <input {...register(`steps.${index}.id`)} type='hidden' value={step.id} />
+                                            }
+                                            <div className='mx-5'>
+                                                <input type="checkbox" name="step.completed" />
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                ))
+                            }
+                        </div>
+       
+                        <div>
+                            <Textinput control={control} className="mb-2" id="add_new_step" placeholder="New Step Name" value={step?.name || ""} onChange={(e)=>{SetStep({name:e.target.value})}}></Textinput>
+                            <DefaultButton className="w-full" onClick={()=>{SetSteps([...steps,step]);append(step);settask({...task,steps:fields});SetStep({name:""})}}>Add</DefaultButton>    
+                        </div>      
+
+                    </NamedContainer>
+                </>
+               
+            }
             <DefaultButton className="w-full" type="submit">Save</DefaultButton>
             
         </form>
