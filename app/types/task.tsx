@@ -1,11 +1,23 @@
+
+interface StepInterface{
+    id: number;
+    name:string
+}
+
+type Author = {
+    id: number;
+    fullname:string
+}
+
 export type TaskType = {
     id: number;
     name: string;
     description?: string;
     deadline:Date;
     priority:Priority;
-    authors:number[];
+    authors:Author[];
     assigned_to:{};
+    steps:StepInterface[]
 }
 
 export enum Priority{
