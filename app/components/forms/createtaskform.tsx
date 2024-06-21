@@ -1,5 +1,5 @@
 import { Priority, TaskType } from "@/app/types/task";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "../form_elements/textinput";
 import { Datepicker } from "flowbite-react";
 
@@ -13,6 +13,8 @@ import Select  from 'react-select';
 import useGetUsers from "@/app/utils/user/get_users";
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import ErrorMessage from "../form_elements/error_message";
+import { makeRequest } from "@/app/utils/makerequest";
+import Textinput from "../form_elements/textinput";
 import NamedContainer from "../containers/named_container";
   
 export default function CreateTaskForm({taskstate, getTasks}){
@@ -24,16 +26,23 @@ export default function CreateTaskForm({taskstate, getTasks}){
     const {data:users, error:usrs_error, isLoading:users_loading} = useGetUsers()    
 
     const {register, handleSubmit, formState:{errors}, control} = useForm({defaultValues:{
+        id:task.id,
         name:task.name,
         authors:[...task.authors].map(author =>{return {value:author, label:`${author.fullname}`}}),
+        assigned_to: task.assigned_to ? { value: task.assigned_to, label: task.assigned_to.fullname } : null,
         steps:task.steps,
         deadline:task.deadline,
         priority:task.priority ? { value: task.priority, label: task.priority } : null
+    }, })
 
 
     const handleValidSubmit = async (data)=>{
+        
         data.authors = data.authors.map((author)=>{return author.value})
+        data.assigned_to = data.assigned_to.value
         data.priority = data.priority.value
+        
+        await trigger(data);
         await getTasks(1);
         !isError && !isMutating && close && close()
     }
@@ -150,9 +159,8 @@ export default function CreateTaskForm({taskstate, getTasks}){
                                     value={value}
                                     ref={ref}
                                     isMulti={false}
-                                    options={[...users].map((user)=>{ return {value:user.id, label:`${user.fullname}`}})} 
-                                    defaultValue={task.assigned_to ? {value:task.assigned_to.id, label:`${task.assigned_to.fullname} `} : {value:"", label:""}}
-                                    onChange={(event)=>{onChange(event);settask({...task, assigned_to:{id:event?.value, fullname: event?.label}})}}/>    )}
+                                    options={[...users].map((user)=>{ return {value:user, label:`${user.fullname}`}})} 
+                                    onChange={(event)=>{onChange(event);settask({...task, assigned_to:{id:event?.id, fullname: event?.label}})}}/>    )}
                             />
                                                      
                         </div>
